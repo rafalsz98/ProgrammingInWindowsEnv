@@ -6,7 +6,8 @@
 
 class CMainFrame : public CFrameWnd
 {
-	
+	static UINT m_buttonsIDs[];
+
 protected: // create from serialization only
 	CMainFrame() noexcept;
 	DECLARE_DYNCREATE(CMainFrame)
@@ -16,6 +17,7 @@ public:
 
 // Operations
 public:
+	void ChangeButton(BOOL state);
 
 // Overrides
 public:

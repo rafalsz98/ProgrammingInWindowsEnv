@@ -3,6 +3,13 @@
 //
 
 #pragma once
+#include "Ball.h"
+
+#define MAX_BALLS 10
+#define MIN_BALL_SIZE 30
+#define MAX_BALL_SIZE 100
+#define MIN_BALL_MOVE 1
+#define MAX_BALL_MOVE 8
 
 
 class CAnimView : public CView
@@ -43,19 +50,23 @@ public:
 	afx_msg void OnDestroy();
 
 private:
+	CBall* generateRandomBall();
+
 	BOOL m_bStart;
 	UINT_PTR m_nTimerID;
-	CRect* m_pBall;
-	CPen* m_pBallPen;
-	CBrush* m_pBallBrush;
-	int m_nBallOffX;
-	int m_nBallOffY;
 	CRect* m_pClientRect;
+	int m_numberOfBalls;
+	CBall* m_ballsArray[MAX_BALLS];
 
 public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	virtual void OnPrepareDC(CDC* pDC, CPrintInfo* pInfo = NULL);
+	afx_msg void OnPlus();
+	afx_msg void OnMinus();
+	afx_msg void OnUpdatePlus(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateMinus(CCmdUI* pCmdUI);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 };
 
 #ifndef _DEBUG  // debug version in AnimView.cpp

@@ -28,6 +28,14 @@ static UINT indicators[] =
 	ID_INDICATOR_SCRL,
 };
 
+UINT CMainFrame::m_buttonsIDs[]
+{
+	ID_START_STOP,
+	ID_PLUS,
+	ID_MINUS,
+	ID_APP_ABOUT
+};
+
 // CMainFrame construction/destruction
 
 CMainFrame::CMainFrame() noexcept
@@ -44,27 +52,42 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CFrameWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	if (!m_wndToolBar.CreateEx(this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC) ||
-		!m_wndToolBar.LoadToolBar(IDR_MAINFRAME))
+	if (!m_wndToolBar.Create(this) ||
+		!m_wndToolBar.LoadBitmapW(IDR_MAINFRAME) ||
+		!m_wndToolBar.SetButtons(m_buttonsIDs, sizeof(m_buttonsIDs) / sizeof(UINT))
+		)
 	{
 		TRACE0("Failed to create toolbar\n");
-		return -1;      // fail to create
+		return -1;
 	}
+	CToolBarCtrl& BarCtrl = m_wndToolBar.GetToolBarCtrl();
+	BarCtrl.SetBitmapSize(CSize(22, 22));
+	BarCtrl.SetButtonSize(CSize(30, 30));
 
 	if (!m_wndStatusBar.Create(this))
 	{
 		TRACE0("Failed to create status bar\n");
 		return -1;      // fail to create
 	}
-	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
+	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators) / sizeof(UINT));
 
 	// TODO: Delete these three lines if you don't want the toolbar to be dockable
 	m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
 	EnableDocking(CBRS_ALIGN_ANY);
 	DockControlBar(&m_wndToolBar);
 
+	srand((unsigned int)time(NULL));
 
 	return 0;
+}
+
+void CMainFrame::ChangeButton(BOOL state)
+{
+	if (state)
+		m_wndToolBar.SetButtonInfo(0, ID_START_STOP, TBBS_BUTTON, 4);
+	else
+		m_wndToolBar.SetButtonInfo(0, ID_START_STOP, TBBS_BUTTON, 0);
+	m_wndToolBar.Invalidate();
 }
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)

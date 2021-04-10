@@ -16,9 +16,7 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
-#define BALLSIZE 60
-#define BLUE RGB(0, 0, 255)
+#include "MainFrm.h"
 
 // CAnimView
 
@@ -29,6 +27,11 @@ BEGIN_MESSAGE_MAP(CAnimView, CView)
 	ON_WM_DESTROY()
 	ON_WM_TIMER()
 	ON_WM_ERASEBKGND()
+	ON_COMMAND(ID_PLUS, &CAnimView::OnPlus)
+	ON_COMMAND(ID_MINUS, &CAnimView::OnMinus)
+	ON_UPDATE_COMMAND_UI(ID_PLUS, &CAnimView::OnUpdatePlus)
+	ON_UPDATE_COMMAND_UI(ID_MINUS, &CAnimView::OnUpdateMinus)
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 void CALLBACK ZfxTimerProc(
@@ -47,20 +50,15 @@ void CALLBACK ZfxTimerProc(
 
 CAnimView::CAnimView() noexcept
 {
-	m_pBall = new CRect(20, 20, 20 + BALLSIZE, 20 + BALLSIZE);
-	m_pBallPen = new CPen(PS_SOLID, 1, BLUE);
-	m_pBallBrush = new CBrush(BLUE);
-	m_nBallOffX = 3;
-	m_nBallOffY = 1;
 	m_bStart = FALSE;
 	m_pClientRect = new CRect(0, 0, 0, 0);
+	m_numberOfBalls = 1;
+	m_nTimerID = NULL;
+	m_ballsArray[m_numberOfBalls - 1] = generateRandomBall();
 }
 
 CAnimView::~CAnimView()
 {
-	delete m_pBall;
-	delete m_pBallPen;
-	delete m_pBallBrush;
 	delete m_pClientRect;
 }
 
@@ -91,13 +89,10 @@ void CAnimView::OnDraw(CDC* pDC)
 	CBitmap* pOldBitmap = memDC.SelectObject(&bmp);
 	memDC.FillSolidRect(m_pClientRect, RGB(230, 230, 200));
 
-	CPen* pOldPen = memDC.SelectObject(m_pBallPen);
-	CBrush* pOldBrush = memDC.SelectObject(m_pBallBrush);
-
-	memDC.Ellipse(m_pBall);
-
-	memDC.SelectObject(pOldPen);
-	memDC.SelectObject(pOldBrush);
+	for (int i = 0; i < m_numberOfBalls; i++)
+	{
+		m_ballsArray[i]->PaintBall(&memDC);
+	}
 
 	b = pDC->BitBlt(0, 0, m_pClientRect->Width(), m_pClientRect->Height(), &memDC, 0, 0, SRCCOPY);
 	ASSERT(b);
@@ -135,6 +130,7 @@ CAnimDoc* CAnimView::GetDocument() const // non-debug version is inline
 void CAnimView::OnStartStop()
 {
 	m_bStart = !m_bStart;
+	((CMainFrame*)GetParentFrame())->ChangeButton(m_bStart);
 }
 
 
@@ -153,12 +149,25 @@ void CAnimView::OnDestroy()
 	KillTimer(m_nTimerID);
 }
 
+CBall* CAnimView::generateRandomBall()
+{
+	int R = rand() % 255;
+	int G = rand() % 255;
+	int B = rand() % 255;
+	int size = rand() % (MAX_BALL_SIZE - MIN_BALL_SIZE) + MIN_BALL_SIZE;
+	int movementX = rand() % (MAX_BALL_MOVE - MIN_BALL_MOVE) + MIN_BALL_MOVE;
+	int movementY = rand() % (MAX_BALL_MOVE - MIN_BALL_MOVE) + MIN_BALL_MOVE;
+	COLORREF color = RGB(R, G, B);
+	return new CBall({ 0, 0 }, { size, size }, color, movementX, movementY, m_pClientRect);
+}
+
 
 void CAnimView::OnTimer(UINT_PTR nIDEvent)
 {
 	if (m_bStart)
 	{
-		m_pBall->OffsetRect(m_nBallOffX, m_nBallOffY);
+		for (int i = 0; i < m_numberOfBalls; i++)
+			m_ballsArray[i]->Move();
 		Invalidate();
 	}
 
@@ -169,7 +178,6 @@ void CAnimView::OnTimer(UINT_PTR nIDEvent)
 BOOL CAnimView::OnEraseBkgnd(CDC* pDC)
 {
 	return 1;
-	//return CView::OnEraseBkgnd(pDC);
 }
 
 
@@ -178,4 +186,51 @@ void CAnimView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 	GetClientRect(m_pClientRect);
 
 	CView::OnPrepareDC(pDC, pInfo);
+}
+
+
+void CAnimView::OnPlus()
+{
+	if (m_numberOfBalls < MAX_BALLS)
+	{
+		m_ballsArray[m_numberOfBalls] = generateRandomBall();
+		m_numberOfBalls++;
+		Invalidate();
+	}
+}
+
+
+void CAnimView::OnMinus()
+{
+	if (m_numberOfBalls > 1)
+	{
+		m_numberOfBalls--;
+		delete m_ballsArray[m_numberOfBalls];
+		Invalidate();
+	}
+}
+
+
+void CAnimView::OnUpdatePlus(CCmdUI* pCmdUI)
+{
+	bool enabled = m_numberOfBalls == MAX_BALLS ? false : true;
+	pCmdUI->Enable(enabled);
+}
+
+
+void CAnimView::OnUpdateMinus(CCmdUI* pCmdUI)
+{
+	bool enabled = m_numberOfBalls == 1 ? false : true;
+	pCmdUI->Enable(enabled);
+}
+
+
+void CAnimView::OnSize(UINT nType, int cx, int cy)
+{
+	CView::OnSize(nType, cx, cy);
+
+	for (int i = 0; i < m_numberOfBalls; i++)
+		m_ballsArray[i]->SizeChanged();
+	// TODO: Add your message handler code here
+
 }
