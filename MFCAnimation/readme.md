@@ -1,0 +1,9 @@
+# MFC animation
+This application is the example how to do simple animation of colorful balls (from 1 to 10).
+
+Features:
+- Generation of balls with random colors and velocity
+- Destruction of said balls
+- Starting/Stopping animation
+- Bouncing off the borders
+- Change-o-window-size proof
