@@ -7,3 +7,6 @@ Features:
 - Starting/Stopping animation
 - Bouncing off the borders
 - Change-o-window-size proof
+
+It looks like this:<br>
+![obraz](https://user-images.githubusercontent.com/18229762/116279741-2ef2ff80-a788-11eb-9f15-16b74044d42d.png)
