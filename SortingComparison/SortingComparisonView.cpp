@@ -136,27 +136,27 @@ void CSortingComparisonView::OnSortShuffle()
 
 void CSortingComparisonView::OnSortRun()
 {
-	if (sortingDialog.GetSize() <= 0) return;
+	if (m_sortingDialog.GetSize() <= 0) return;
 	m_bDrawData = TRUE;
 
 	if (m_sorts != nullptr) delete m_sorts;
-	m_sorts = new Sorts(sortingDialog.GetSize());
+	m_sorts = new Sorts(m_sortingDialog.GetSize());
 	std::fill(m_sortTimes.begin(), m_sortTimes.end(), 0);
 
-	if (sortingDialog.IsBubble()) m_sortTimes[0] = m_sorts->MeasureExecutionTime(SortMethod::Bubble);
-	if (sortingDialog.IsHalfInsertion()) m_sortTimes[1] = m_sorts->MeasureExecutionTime(SortMethod::HalfInsertion);
-	if (sortingDialog.IsInsertion()) m_sortTimes[2] = m_sorts->MeasureExecutionTime(SortMethod::Insertion);
-	if (sortingDialog.IsMixedBubble()) m_sortTimes[3] = m_sorts->MeasureExecutionTime(SortMethod::MixedBubble);
-	if (sortingDialog.IsSelection()) m_sortTimes[4] = m_sorts->MeasureExecutionTime(SortMethod::Selection);
-	if (sortingDialog.IsQuick()) m_sortTimes[5] = m_sorts->MeasureExecutionTime(SortMethod::Quick);
-	if (sortingDialog.IsHeap()) m_sortTimes[6] = m_sorts->MeasureExecutionTime(SortMethod::Heap);
+	if (m_sortingDialog.IsBubble()) m_sortTimes[0] = m_sorts->MeasureExecutionTime(SortMethod::Bubble);
+	if (m_sortingDialog.IsHalfInsertion()) m_sortTimes[1] = m_sorts->MeasureExecutionTime(SortMethod::HalfInsertion);
+	if (m_sortingDialog.IsInsertion()) m_sortTimes[2] = m_sorts->MeasureExecutionTime(SortMethod::Insertion);
+	if (m_sortingDialog.IsMixedBubble()) m_sortTimes[3] = m_sorts->MeasureExecutionTime(SortMethod::MixedBubble);
+	if (m_sortingDialog.IsSelection()) m_sortTimes[4] = m_sorts->MeasureExecutionTime(SortMethod::Selection);
+	if (m_sortingDialog.IsQuick()) m_sortTimes[5] = m_sorts->MeasureExecutionTime(SortMethod::Quick);
+	if (m_sortingDialog.IsHeap()) m_sortTimes[6] = m_sorts->MeasureExecutionTime(SortMethod::Heap);
 
 	Invalidate();
 }
 
 void CSortingComparisonView::OnSortSettings()
 {
-	sortingDialog.DoModal();
+	m_sortingDialog.DoModal();
 }
 
 void CSortingComparisonView::DrawBackground(CDC* pDC)

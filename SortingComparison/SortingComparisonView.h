@@ -64,7 +64,7 @@ private:
 	const std::vector<CBrush*> m_brushes;
 	std::vector<double> m_sortTimes;
 
-	CSortingDialog sortingDialog;
+	CSortingDialog m_sortingDialog;
 	Sorts* m_sorts;
 	CRect* m_pClientRect;
 	int m_nNameDistance;
