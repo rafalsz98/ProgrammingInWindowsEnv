@@ -15,8 +15,10 @@
 #define IDC_HEAP                        1005
 #define IDC_QUICK                       1006
 #define IDC_ALL                         1007
+#define IDC_N2_ALL                      1007
 #define IDC_ARRAY_SIZE                  1008
 #define IDC_NONE                        1009
+#define IDC_NLOGN_ALL                   1010
 #define ID_SORT_SHUFFLE                 32771
 #define ID_SORT_RUN                     32772
 #define ID_SORT_SETTINGS                32773

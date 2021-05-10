@@ -204,7 +204,7 @@ double Sorts::MeasureExecutionTime(SortMethod sortMethod)
 {
 	memcpy(m_pSortingArray, m_pArray, m_nSize * sizeof(int));
 
-	double start = clock();
+	double start = GetTickCount64();
 	switch (sortMethod) 
 	{
 	case SortMethod::Bubble:
@@ -229,7 +229,7 @@ double Sorts::MeasureExecutionTime(SortMethod sortMethod)
 		HeapSort();
 		break;
 	}
-	double end = clock();
+	double end = GetTickCount64();
 
 	return (double)((end - start) / CLOCKS_PER_SEC);
 }

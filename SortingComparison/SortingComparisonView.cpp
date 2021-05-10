@@ -71,6 +71,8 @@ CSortingComparisonView::CSortingComparisonView() noexcept
 	m_sortTimes.resize(m_sortsNames.size());
 	m_nLineDistance = 0;
 	m_nNameDistance = 0;
+	m_pTimesFont = new CFont();
+	m_pTimesFont->CreatePointFont(100, L"Garamond");
 }
 
 CSortingComparisonView::~CSortingComparisonView()
@@ -79,6 +81,7 @@ CSortingComparisonView::~CSortingComparisonView()
 	for (auto pen : m_pens) delete pen;
 	for (auto brush : m_brushes) delete brush;
 	if (m_sorts != nullptr) delete m_sorts;
+	delete m_pTimesFont;
 }
 
 BOOL CSortingComparisonView::PreCreateWindow(CREATESTRUCT& cs)
@@ -188,6 +191,7 @@ void CSortingComparisonView::DrawData(CDC* pDC)
 
 	double step = max / LINES_DENSITY;
 	double value = max;
+	CFont* oldFont = pDC->SelectObject(m_pTimesFont);
 	for (int i = 0; i < LINES_DENSITY; i++)
 	{
 		CString str;
@@ -195,7 +199,7 @@ void CSortingComparisonView::DrawData(CDC* pDC)
 		pDC->TextOutW(MARGIN - 40, MARGIN + i * m_nLineDistance - 5, str);
 		value -= step;
 	}
-
+	pDC->SelectObject(oldFont);
 	for (size_t i = 0; i < m_sortTimes.size(); i++)
 	{
 		if (fabs(m_sortTimes[i]) < 1e-3) continue;

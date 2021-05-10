@@ -64,6 +64,7 @@ private:
 	const std::vector<CBrush*> m_brushes;
 	std::vector<double> m_sortTimes;
 
+	CFont* m_pTimesFont;
 	CSortingDialog m_sortingDialog;
 	Sorts* m_sorts;
 	CRect* m_pClientRect;

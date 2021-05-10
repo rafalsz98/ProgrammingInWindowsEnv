@@ -83,30 +83,14 @@ void CSortingDialog::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CSortingDialog, CDialog)
-	ON_BN_CLICKED(IDC_ALL, &CSortingDialog::OnBnClickedAll)
 	ON_BN_CLICKED(IDOK, &CSortingDialog::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_NONE, &CSortingDialog::OnBnClickedNone)
+	ON_BN_CLICKED(IDC_N2_ALL, &CSortingDialog::OnBnClickedN2All)
+	ON_BN_CLICKED(IDC_NLOGN_ALL, &CSortingDialog::OnBnClickedNlognAll)
 END_MESSAGE_MAP()
 
 
 // CSortingDialog message handlers
-
-
-void CSortingDialog::OnBnClickedAll()
-{
-	const int checkboxes[] = { 
-		IDC_BUBBLE,
-		IDC_HALFINSERTION,
-		IDC_HEAP,
-		IDC_INSERTION,
-		IDC_MIXEDBUBBLE,
-		IDC_QUICK,
-		IDC_SELECTION
-	};
-
-	for (auto checkbox : checkboxes)
-		((CButton*)GetDlgItem(checkbox))->SetCheck(1);
-}
 
 
 void CSortingDialog::OnBnClickedOk()
@@ -129,4 +113,31 @@ void CSortingDialog::OnBnClickedNone()
 
 	for (auto checkbox : checkboxes)
 		((CButton*)GetDlgItem(checkbox))->SetCheck(0);
+}
+
+
+void CSortingDialog::OnBnClickedN2All()
+{
+	const int checkboxes[] = {
+		IDC_BUBBLE,
+		IDC_HALFINSERTION,
+		IDC_INSERTION,
+		IDC_MIXEDBUBBLE,
+		IDC_SELECTION
+	};
+
+	for (auto checkbox : checkboxes)
+		((CButton*)GetDlgItem(checkbox))->SetCheck(1);
+}
+
+
+void CSortingDialog::OnBnClickedNlognAll()
+{
+	const int checkboxes[] = {
+		IDC_HEAP,
+		IDC_QUICK,
+	};
+
+	for (auto checkbox : checkboxes)
+		((CButton*)GetDlgItem(checkbox))->SetCheck(1);
 }
