@@ -187,6 +187,7 @@
     <ClInclude Include="CalculatorDialog.h" />
     <ClInclude Include="CalculatorDoc.h" />
     <ClInclude Include="CalculatorView.h" />
+    <ClInclude Include="CanonComplex.h" />
     <ClInclude Include="Complex.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MainFrm.h" />
@@ -199,6 +200,7 @@
     <ClCompile Include="CalculatorDialog.cpp" />
     <ClCompile Include="CalculatorDoc.cpp" />
     <ClCompile Include="CalculatorView.cpp" />
+    <ClCompile Include="CanonComplex.cpp" />
     <ClCompile Include="Complex.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="pch.cpp">

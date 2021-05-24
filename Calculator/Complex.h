@@ -16,7 +16,6 @@ public:
 	CComplex& operator-=(const CComplex& rhs);
 	CComplex& operator*=(const CComplex& rhs);
 	CComplex& operator/=(const CComplex& rhs);
-	CComplex& operator- ();
 	CComplex& operator=(const CComplex& rhs);
 
 	inline void setRe(double re) { m_dRe = re; }
@@ -28,6 +27,7 @@ public:
 	double Module();
 	CComplex Coupled();
 
+	friend const CComplex operator- (const CComplex& c);
 	friend const CComplex operator- (const CComplex& c1, const CComplex& c2);
 	friend const CComplex operator+ (const CComplex& c1, const CComplex& c2);
 	friend const CComplex operator* (const CComplex& c1, const CComplex& c2);

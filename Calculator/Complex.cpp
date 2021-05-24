@@ -54,13 +54,6 @@ CComplex& CComplex::operator/=(const CComplex& rhs)
 	return *this;
 }
 
-CComplex& CComplex::operator- ()
-{
-	this->m_dRe -= this->m_dRe;
-	this->m_dIm -= this->m_dIm;
-	return *this;
-}
-
 CComplex& CComplex::operator=(const CComplex& rhs)
 {
 	if (&rhs != this)
@@ -80,6 +73,14 @@ double CComplex::Module()
 CComplex CComplex::Coupled()
 {
 	return CComplex(this->m_dRe, -this->m_dIm);
+}
+
+const CComplex operator-(const CComplex& c)
+{
+	CComplex res{ c };
+	res.m_dRe = -res.m_dRe;
+	res.m_dIm = -res.m_dIm;
+	return res;
 }
 
 const CComplex operator- (const CComplex& c1, const CComplex& c2)
@@ -110,18 +111,6 @@ const CComplex operator/ (const CComplex& c1, const CComplex& c2)
 
 	CComplex left(c1);
 	return left /= c2;
-}
-
-std::ostream& operator<< (std::ostream& o, const CComplex& c)
-{
-	o << "( " << c.m_dRe << ", " << c.m_dIm << " )";
-	return o;
-}
-
-std::istream& operator>> (std::istream& i, CComplex& c)
-{
-	i >> c.m_dRe >> c.m_dIm;
-	return i;
 }
 
 bool operator== (const CComplex c1, const CComplex c2)
